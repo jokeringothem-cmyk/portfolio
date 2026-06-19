@@ -14,14 +14,13 @@ export function VideoPlayer({ src, className = "" }: { src: string; className?: 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const video = videoRef.current;
-          if (!video) return;
           if (entry.isIntersecting) {
-            // Lazy-load the video source on first view
             if (!loaded) setLoaded(true);
-            video.play().catch(() => {});
+            const video = videoRef.current;
+            if (video) video.play().catch(() => {});
           } else {
-            video.pause();
+            const video = videoRef.current;
+            if (video) video.pause();
           }
         });
       },
