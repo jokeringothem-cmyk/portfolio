@@ -38,11 +38,12 @@ export function VideoPlayer({ src, className = "" }: { src: string; className?: 
         <video
           ref={videoRef}
           src={src}
+          autoPlay
           muted
           loop
           playsInline
           controls
-          preload="none"
+          preload="metadata"
           className="w-full max-h-[50vh] sm:max-h-[60vh] object-contain"
         />
       ) : (
