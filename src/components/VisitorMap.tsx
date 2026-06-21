@@ -9,6 +9,42 @@ interface VisitorStats {
 
 const BASE_PATH_STYLE = `<style>path{fill:rgba(255,255,255,0.08);stroke:rgba(255,255,255,0.18);stroke-width:0.5;vector-effect:non-scaling-stroke;transition:fill 0.4s,fill-opacity 0.4s}</style>`;
 
+const COUNTRY_NAMES: Record<string, string> = {
+  af: "Afghanistan", al: "Albania", dz: "Algeria", ao: "Angola", ar: "Argentina",
+  am: "Armenia", au: "Australia", at: "Austria", az: "Azerbaijan", bd: "Bangladesh",
+  by: "Belarus", be: "Belgium", bj: "Benin", bt: "Bhutan", bo: "Bolivia",
+  ba: "Bosnia", bw: "Botswana", br: "Brazil", bn: "Brunei", bg: "Bulgaria",
+  bf: "Burkina Faso", bi: "Burundi", kh: "Cambodia", cm: "Cameroon", ca: "Canada",
+  cf: "CAR", td: "Chad", cl: "Chile", cn: "China", co: "Colombia",
+  cg: "Congo", cr: "Costa Rica", hr: "Croatia", cu: "Cuba", cy: "Cyprus",
+  cz: "Czechia", cd: "DR Congo", dk: "Denmark", dj: "Djibouti", do: "Dominican Rep.",
+  ec: "Ecuador", eg: "Egypt", sv: "El Salvador", gq: "Eq. Guinea", er: "Eritrea",
+  ee: "Estonia", et: "Ethiopia", fi: "Finland", fr: "France", ga: "Gabon",
+  gm: "Gambia", ge: "Georgia", de: "Germany", gh: "Ghana", gr: "Greece",
+  gl: "Greenland", gt: "Guatemala", gn: "Guinea", gw: "Guinea-Bissau", gy: "Guyana",
+  ht: "Haiti", hn: "Honduras", hu: "Hungary", is: "Iceland", in: "India",
+  id: "Indonesia", ir: "Iran", iq: "Iraq", ie: "Ireland", il: "Israel",
+  it: "Italy", ci: "Ivory Coast", jm: "Jamaica", jp: "Japan", jo: "Jordan",
+  kz: "Kazakhstan", ke: "Kenya", kw: "Kuwait", kg: "Kyrgyzstan", la: "Laos",
+  lv: "Latvia", lb: "Lebanon", ls: "Lesotho", lr: "Liberia", ly: "Libya",
+  lt: "Lithuania", lu: "Luxembourg", mg: "Madagascar", mw: "Malawi", my: "Malaysia",
+  ml: "Mali", mr: "Mauritania", mx: "Mexico", md: "Moldova", mn: "Mongolia",
+  me: "Montenegro", ma: "Morocco", mz: "Mozambique", mm: "Myanmar", na: "Namibia",
+  np: "Nepal", nl: "Netherlands", nz: "New Zealand", ni: "Nicaragua", ne: "Niger",
+  ng: "Nigeria", kp: "North Korea", mk: "N. Macedonia", no: "Norway", om: "Oman",
+  pk: "Pakistan", ps: "Palestine", pa: "Panama", py: "Paraguay", pe: "Peru",
+  ph: "Philippines", pl: "Poland", pt: "Portugal", qa: "Qatar", ro: "Romania",
+  ru: "Russia", rw: "Rwanda", sa: "Saudi Arabia", sn: "Senegal", rs: "Serbia",
+  sl: "Sierra Leone", sg: "Singapore", sk: "Slovakia", si: "Slovenia", so: "Somalia",
+  za: "South Africa", kr: "South Korea", ss: "South Sudan", es: "Spain", lk: "Sri Lanka",
+  sd: "Sudan", sr: "Suriname", sz: "Eswatini", se: "Sweden", ch: "Switzerland",
+  sy: "Syria", tw: "Taiwan", tj: "Tajikistan", tz: "Tanzania", th: "Thailand",
+  tg: "Togo", tt: "Trinidad & Tobago", tn: "Tunisia", tr: "Turkey", tm: "Turkmenistan",
+  ug: "Uganda", ua: "Ukraine", ae: "UAE", gb: "UK", us: "United States",
+  uy: "Uruguay", uz: "Uzbekistan", ve: "Venezuela", vn: "Vietnam", eh: "W. Sahara",
+  ye: "Yemen", zm: "Zambia", zw: "Zimbabwe",
+};
+
 function colorForCount(count: number, max: number): { fill: string; opacity: number } {
   if (max === 0 || count === 0) return { fill: "rgba(255,255,255,0.08)", opacity: 1 };
   const t = count / max; // 0..1
@@ -131,7 +167,9 @@ export function VisitorMap() {
             </span>
             {stats && stats.length > 0 && (
               <span className="text-[10px] text-[#98989d]/30 tracking-wide">
-                {stats.slice(0, 5).map((s) => s.country.toUpperCase()).join(" · ")}
+                {stats.slice(0, 5).map((s) =>
+                  `${COUNTRY_NAMES[s.country] || s.country.toUpperCase()} ${s.value}`
+                ).join(" · ")}
                 {stats.length > 5 ? " · ..." : ""}
               </span>
             )}
