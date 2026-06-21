@@ -1,6 +1,7 @@
 "use client";
 
 import { useLocale } from "@/lib/locale";
+import { VisitorMap } from "@/components/VisitorMap";
 
 export function Footer() {
   const { t } = useLocale();
@@ -14,7 +15,12 @@ export function Footer() {
           <p className="text-xs text-[#98989d] max-w-sm leading-relaxed">
             {t("footer.license")}
           </p>
-          <p className="text-[10px] tracking-[0.15em] uppercase text-[#98989d]/40 mt-4">
+
+          <div className="mt-4">
+            <VisitorMap />
+          </div>
+
+          <p className="text-[10px] tracking-[0.15em] uppercase text-[#98989d]/40 mt-6">
             {t("footer.copyright", { year: new Date().getFullYear() })}
           </p>
         </div>
