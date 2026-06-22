@@ -17,7 +17,7 @@ export async function GET() {
     info.recent_count = recentLen;
 
     if (recentLen > 0) {
-      const raw = await redis.lrange("recent_visitors", 0, 2);
+      const raw = await redis.lrange("recent_visitors", 0, 19);
       info.recent_sample = raw.map((r: any) => {
         try { return JSON.parse(r); } catch { return r; }
       });
