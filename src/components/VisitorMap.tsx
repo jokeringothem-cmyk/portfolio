@@ -7,6 +7,16 @@ interface VisitorStats {
   value: number;
 }
 
+interface RecentVisitor {
+  ip: string;
+  country: string;
+  city: string;
+  region: string;
+  isp: string;
+  ua: string;
+  time: string;
+}
+
 const BASE_PATH_STYLE = `<style>path{fill:rgba(255,255,255,0.08);stroke:rgba(255,255,255,0.18);stroke-width:0.5;vector-effect:non-scaling-stroke;transition:fill 0.4s,fill-opacity 0.4s}</style>`;
 
 const COUNTRY_NAMES: Record<string, string> = {
@@ -93,6 +103,7 @@ function applyStats(svg: SVGSVGElement, stats: VisitorStats[]) {
 
 export function VisitorMap() {
   const [stats, setStats] = useState<VisitorStats[] | null>(null);
+  const [recent, setRecent] = useState<RecentVisitor[]>([]);
   const [loading, setLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const [svgText, setSvgText] = useState<string | null>(null);
@@ -101,14 +112,17 @@ export function VisitorMap() {
   useEffect(() => {
     async function init() {
       try {
-        // 1. record this visit
         await fetch("/api/track", { method: "POST" });
-        // 2. fetch accumulated stats
-        const r = await fetch("/api/visitors");
-        const data = await r.json();
-        if (Array.isArray(data)) setStats(data);
+        const [statsRes, recentRes] = await Promise.all([
+          fetch("/api/visitors"),
+          fetch("/api/recent"),
+        ]);
+        const statsData = await statsRes.json();
+        const recentData = await recentRes.json();
+        if (Array.isArray(statsData)) setStats(statsData);
+        if (Array.isArray(recentData)) setRecent(recentData.slice(0, 3));
       } catch {
-        // KV might not be set up yet — ok
+        // ok
       } finally {
         setLoading(false);
       }
@@ -172,6 +186,15 @@ export function VisitorMap() {
                 ).join(" · ")}
                 {stats.length > 5 ? " · ..." : ""}
               </span>
+            )}
+            {recent.length > 0 && (
+              <div className="flex flex-col items-center gap-0.5 mt-2">
+                {recent.map((v, i) => (
+                  <span key={i} className="text-[9px] text-[#98989d]/25 tracking-wide">
+                    {v.ip} — {v.city}, {v.country} — {v.isp} — {new Date(v.time).toLocaleString()}
+                  </span>
+                ))}
+              </div>
             )}
           </>
         )}
