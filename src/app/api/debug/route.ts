@@ -23,12 +23,7 @@ export async function GET() {
       });
     }
 
-    // list all keys
-    const keys: string[] = [];
-    for await (const key of redis.scanIterator()) {
-      keys.push(key);
-    }
-    info.all_keys = keys;
+    info.all_keys = await redis.keys("*");
 
     info.redis = "connected";
   } catch (e: any) {
