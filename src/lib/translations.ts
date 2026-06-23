@@ -14,7 +14,6 @@ export const translations: Record<string, Record<Locale, string>> = {
 
   // ProjectSection buttons
   "project.github": { zh: "View on GitHub", en: "View on GitHub" },
-  "project.download": { zh: "下载代码", en: "Download Code" },
   "project.results": { zh: "查看结果", en: "View Results" },
   "project.showAll": { zh: "展示全部 {n} 个创新点", en: "Show all {n} highlights" },
   "project.collapse": { zh: "收起", en: "Collapse" },
